@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- 配置生成器 -->
+<generatorConfiguration>
+
+    <!-- 一个数据库一个context,defaultModelType="flat" 大数据字段，不分表 -->
+    <context id="mytables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
+        <property name="autoDelimitKeywords" value="true"/>
+
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="utf-8"/>
+
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <!--通用 Mapper 插件，可以生成带注解的实体类-->
+        <!--        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">-->
+        <!--            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>-->
+        <!--            &lt;!&ndash; caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true &ndash;&gt;-->
+        <!--            <property name="caseSensitive" value="true"/>-->
+        <!--        </plugin>-->
+        <!-- 注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="false"/> <!-- 是否生成注释代时间戳-->
+        </commentGenerator>
+
+        <!-- jdbc连接-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.32.226.83:3306/metadata?allowMultiQueries=true"
+                        userId="root"
+                        password="CESTC1Dhr7El67KD3jG@"/>
+
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="cn.cestc.os.metadata.pojo" targetProject="src/main/java">
+            <!-- 是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 从数据库返回的值去掉前后空格 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成map.xml文件存放地址 -->
+        <sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- 生成接口dao -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.cestc.os.metadata.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+
+        <!--<table tableName="t_db_table">-->
+        <!--    <domainObjectRenamingRule searchString="^T" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table tableName="t_data_source_info">-->
+        <!--    <domainObjectRenamingRule searchString="^T" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table tableName="t_data_source_type">-->
+        <!--    <domainObjectRenamingRule searchString="^T" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table tableName="t_db_field">-->
+        <!--    <domainObjectRenamingRule searchString="^T" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table tableName="t_sql_history">-->
+        <!--    <domainObjectRenamingRule searchString="^T" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table tableName="t_sql_save">-->
+        <!--    <domainObjectRenamingRule searchString="^T" replaceString=""/>-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

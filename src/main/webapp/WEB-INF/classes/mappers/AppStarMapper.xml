@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cestc.os.desktop.mapper.AppStarMapper">
+    <resultMap type="cn.cestc.os.desktop.model.AppStarModel" id="appStarModel">
+        <id property="tbid" column="tbid" javaType="int" jdbcType="INTEGER"/>
+        <result property="app_id" column="app_id" javaType="int" jdbcType="BIGINT"/>
+        <result property="member_id" column="member_id" javaType="int" jdbcType="BIGINT"/>
+        <result property="starnum" column="starnum" javaType="int" jdbcType="TINYINT"/>
+        <result property="dt" column="dt" javaType="string" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="sql_where">
+        <where>
+            1=1
+            <if test="tbid !=null">
+                AND tbid = #{tbid}
+            </if>
+            <if test="app_id !=null">
+                AND app_id = #{app_id}
+            </if>
+            <if test="member_id !=null">
+                AND member_id = #{member_id}
+            </if>
+            <if test="starnum !=null">
+                AND starnum = #{starnum}
+            </if>
+            <if test="dt !=null">
+                AND dt = #{dt}
+            </if>
+        </where>
+    </sql>
+
+
+    <insert id="insert" parameterType="cn.cestc.os.desktop.model.AppStarModel" flushCache="true" useGeneratedKeys="true"
+            keyProperty="tbid" keyColumn="GENERATED_KEY">
+		<![CDATA[
+        INSERT INTO tb_app_star (app_id,
+                                 member_id,
+                                 starnum,
+                                 dt)
+        VALUES (#{app_id},
+                #{member_id},
+                #{starnum},
+                #{dt});
+        ]]>
+	</insert>
+
+
+    <delete id="delete" parameterType="cn.cestc.os.desktop.model.AppStarModel">
+        <![CDATA[
+			DELETE 
+			FROM 
+				tb_app_star
+		]]>
+        <include refid="sql_where"/>
+    </delete>
+
+    <update id="updateById" parameterType="cn.cestc.os.desktop.model.AppStarModel">
+        update tb_app_star
+        <set>
+            <if test="app_id != null">app_id=#{app_id},</if>
+            <if test="member_id != null">member_id=#{member_id},</if>
+            <if test="starnum != null">starnum=#{starnum},</if>
+            <if test="dt != null">dt=#{dt}</if>
+        </set>
+        where tbid=#{tbid}
+    </update>
+
+
+    <select id="selectByCondition" resultType="cn.cestc.os.desktop.model.AppStarModel" parameterType="java.util.Map">
+        <![CDATA[
+			SELECT 
+			   app_id,
+			   member_id,
+			   starnum,
+			   dt
+			FROM
+				tb_app_star
+		]]>
+        <include refid="sql_where"/>
+    </select>
+
+    <select id="getAvgStarNum" resultType="double">
+		<![CDATA[
+        SELECT avg(starnum)
+        FROM tb_app_star
+        where app_id = #{app_id}
+        ]]>
+	</select>
+
+</mapper>

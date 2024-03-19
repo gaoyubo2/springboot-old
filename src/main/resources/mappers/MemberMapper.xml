@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.cestc.os.desktop.mapper.MemberMapper">
+    <resultMap type="cn.cestc.os.desktop.model.MemberModel" id="memberModel">
+        <id column="tbid" property="tbid" javaType="int" jdbcType="INTEGER"/>
+        <result column="username" property="username" javaType="string" jdbcType="VARCHAR"/>
+        <result column="type" property="type" javaType="int" jdbcType="TINYINT"/>
+        <result column="dock" property="dock" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="desk1" property="desk1" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="desk2" property="desk2" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="desk3" property="desk3" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="desk4" property="desk4" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="desk5" property="desk5" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="appxy" property="appxy" javaType="string" jdbcType="VARCHAR"/>
+        <result column="desk" property="desk" javaType="int" jdbcType="TINYINT"/>
+        <result column="dockpos" property="dockpos" javaType="string" jdbcType="VARCHAR"/>
+        <result column="appsize" property="appsize" javaType="int" jdbcType="INTEGER"/>
+        <result column="appverticalspacing" property="appverticalspacing" javaType="int" jdbcType="INTEGER"/>
+        <result column="apphorizontalspacing" property="apphorizontalspacing" javaType="int" jdbcType="INTEGER"/>
+        <result column="wallpaper_id" property="wallpaperId" javaType="int" jdbcType="INTEGER"/>
+        <result column="wallpaperwebsite" property="wallpaperwebsite" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="wallpaperstate" property="wallpaperstate" javaType="int" jdbcType="TINYINT"/>
+        <result column="wallpapertype" property="wallpapertype" javaType="string" jdbcType="VARCHAR"/>
+        <result column="skin" property="skin" javaType="string" jdbcType="VARCHAR"/>
+        <result column="regdt" property="regdt" javaType="string" jdbcType="TIMESTAMP"/>
+        <result column="lastlogindt" property="lastlogindt" javaType="string" jdbcType="TIMESTAMP"/>
+        <result column="lastloginip" property="lastloginip" javaType="string" jdbcType="VARCHAR"/>
+        <result column="thislogindt" property="thislogindt" javaType="string" jdbcType="TIMESTAMP"/>
+        <result column="thisloginip" property="thisloginip" javaType="string" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sql_where">
+        <where>
+            1=1
+            <if test="tbid !=null">
+                AND tbid = #{tbid}
+            </if>
+            <if test="username !=null">
+                AND username = #{username}
+            </if>
+            <if test="type !=null">
+                AND type = #{type}
+            </if>
+            <if test="dock !=null">
+                AND dock = #{dock}
+            </if>
+            <if test="desk1 !=null">
+                AND desk1 = #{desk1}
+            </if>
+            <if test="desk2 !=null">
+                AND desk2 = #{desk2}
+            </if>
+            <if test="desk3 !=null">
+                AND desk3 = #{desk3}
+            </if>
+            <if test="desk4 !=null">
+                AND desk4 = #{desk4}
+            </if>
+            <if test="desk5 !=null">
+                AND desk5 = #{desk5}
+            </if>
+            <if test="appxy !=null">
+                AND appxy = #{appxy}
+            </if>
+            <if test="desk !=null">
+                AND desk = #{desk}
+            </if>
+            <if test="dockpos !=null">
+                AND dockpos = #{dockpos}
+            </if>
+            <if test="appsize !=null">
+                AND appsize = #{appsize}
+            </if>
+            <if test="appverticalspacing !=null">
+                AND appverticalspacing = #{appverticalspacing}
+            </if>
+            <if test="apphorizontalspacing !=null">
+                AND apphorizontalspacing = #{apphorizontalspacing}
+            </if>
+            <if test="wallpaperId !=null">
+                AND wallpaper_id = #{wallpaperId}
+            </if>
+            <if test="wallpaperwebsite !=null">
+                AND wallpaperwebsite = #{wallpaperwebsite}
+            </if>
+            <if test="wallpaperstate !=null">
+                AND wallpaperstate = #{wallpaperstate}
+            </if>
+            <if test="wallpapertype !=null">
+                AND wallpapertype = #{wallpapertype}
+            </if>
+            <if test="skin !=null">
+                AND skin = #{skin}
+            </if>
+            <if test="regdt !=null">
+                AND regdt = #{regdt}
+            </if>
+            <if test="lastlogindt !=null">
+                AND lastlogindt = #{lastlogindt}
+            </if>
+            <if test="lastloginip !=null">
+                AND lastloginip = #{lastloginip}
+            </if>
+            <if test="thislogindt !=null">
+                AND thislogindt = #{thislogindt}
+            </if>
+            <if test="thisloginip !=null">
+                AND thisloginip = #{thisloginip}
+            </if>
+        </where>
+    </sql>
+
+
+    <insert id="insert" parameterType="cn.cestc.os.desktop.model.MemberModel" flushCache="true" useGeneratedKeys="true"
+            keyProperty="tbid" keyColumn="GENERATED_KEY">
+		<![CDATA[
+        INSERT INTO tb_member (username, type, dock, desk1, desk2, desk3, desk4, desk5,
+                               appxy, desk, dockpos, appsize, appverticalspacing, apphorizontalspacing, wallpaper_id,
+                               wallpaperwebsite,
+                               wallpaperstate, wallpapertype, skin, regdt, lastlogindt, lastloginip, thislogindt,
+                               thisloginip)
+        VALUES (#{username},
+                #{type},
+                #{dock},
+                #{desk1},
+                #{desk2},
+                #{desk3},
+                #{desk4},
+                #{desk5},
+                #{appxy},
+                #{desk},
+                #{dockpos},
+                #{appsize},
+                #{appverticalspacing},
+                #{apphorizontalspacing},
+                #{wallpaperId},
+                #{wallpaperwebsite},
+                #{wallpaperstate},
+                #{wallpapertype},
+                #{skin},
+                #{regdt},
+                #{lastlogindt},
+                #{lastloginip},
+                #{thislogindt},
+                #{thisloginip});
+        ]]>
+	</insert>
+
+
+    <delete id="delete" parameterType="cn.cestc.os.desktop.model.MemberModel">
+        <![CDATA[
+			DELETE 
+			FROM 
+				tb_member
+		]]>
+        <include refid="sql_where"/>
+    </delete>
+
+    <update id="updateById" parameterType="cn.cestc.os.desktop.model.MemberModel">
+        update tb_member
+        <set>
+            <if test="username != null">username=#{username},</if>
+            <if test="type != null">type=#{type},</if>
+            <if test="dock != null">dock=#{dock},</if>
+            <if test="desk1 != null">desk1=#{desk1},</if>
+            <if test="desk2 != null">desk2=#{desk2},</if>
+            <if test="desk3 != null">desk3=#{desk3},</if>
+            <if test="desk4 != null">desk4=#{desk4},</if>
+            <if test="desk5 != null">desk5=#{desk5},</if>
+            <if test="appxy != null">appxy=#{appxy},</if>
+            <if test="desk != null">desk=#{desk},</if>
+            <if test="dockpos != null">dockpos=#{dockpos},</if>
+            <if test="appsize != null">appsize=#{appsize},</if>
+            <if test="appverticalspacing != null">appverticalspacing=#{appverticalspacing},</if>
+            <if test="apphorizontalspacing != null">apphorizontalspacing=#{apphorizontalspacing},</if>
+            <if test="wallpaperId != null">wallpaper_id=#{wallpaperId},</if>
+            <if test="wallpaperwebsite != null">wallpaperwebsite=#{wallpaperwebsite},</if>
+            <if test="wallpaperstate != null">wallpaperstate=#{wallpaperstate},</if>
+            <if test="wallpapertype != null">wallpapertype=#{wallpapertype},</if>
+            <if test="skin != null">skin=#{skin},</if>
+            <if test="regdt != null">regdt=#{regdt},</if>
+            <if test="lastlogindt != null">lastlogindt=#{lastlogindt},</if>
+            <if test="lastloginip != null">lastloginip=#{lastloginip},</if>
+            <if test="thislogindt != null">thislogindt=#{thislogindt},</if>
+            <if test="thisloginip != null">thisloginip=#{thisloginip}</if>
+        </set>
+        where tbid=#{tbid}
+    </update>
+
+    <update id="updateByUsername" parameterType="cn.cestc.os.desktop.model.MemberModel">
+        update tb_member
+        <set>
+            <if test="username != null">username=#{username},</if>
+            <if test="type != null">type=#{type},</if>
+            <if test="dock != null">dock=#{dock},</if>
+            <if test="desk1 != null">desk1=#{desk1},</if>
+            <if test="desk2 != null">desk2=#{desk2},</if>
+            <if test="desk3 != null">desk3=#{desk3},</if>
+            <if test="desk4 != null">desk4=#{desk4},</if>
+            <if test="desk5 != null">desk5=#{desk5},</if>
+            <if test="appxy != null">appxy=#{appxy},</if>
+            <if test="desk != null">desk=#{desk},</if>
+            <if test="dockpos != null">dockpos=#{dockpos},</if>
+            <if test="appsize != null">appsize=#{appsize},</if>
+            <if test="appverticalspacing != null">appverticalspacing=#{appverticalspacing},</if>
+            <if test="apphorizontalspacing != null">apphorizontalspacing=#{apphorizontalspacing},</if>
+            <if test="wallpaperId != null">wallpaper_id=#{wallpaperId},</if>
+            <if test="wallpaperwebsite != null">wallpaperwebsite=#{wallpaperwebsite},</if>
+            <if test="wallpaperstate != null">wallpaperstate=#{wallpaperstate},</if>
+            <if test="wallpapertype != null">wallpapertype=#{wallpapertype},</if>
+            <if test="skin != null">skin=#{skin},</if>
+            <if test="regdt != null">regdt=#{regdt},</if>
+            <if test="lastlogindt != null">lastlogindt=#{lastlogindt},</if>
+            <if test="lastloginip != null">lastloginip=#{lastloginip},</if>
+            <if test="thislogindt != null">thislogindt=#{thislogindt},</if>
+            <if test="thisloginip != null">thisloginip=#{thisloginip}</if>
+        </set>
+        where username=#{username}
+    </update>
+
+
+    <select id="selectByCondition" resultMap="memberModel" parameterType="java.util.Map">
+        <![CDATA[
+			SELECT 
+			    tbid, username, type,dock, desk1, desk2, desk3, desk4, desk5,
+			    appxy, desk, dockpos, appsize, appverticalspacing, apphorizontalspacing, wallpaper_id,wallpaperwebsite,
+			    wallpaperstate, wallpapertype, skin, regdt, lastlogindt, lastloginip, thislogindt, thisloginip
+			FROM
+				tb_member
+		]]>
+        <include refid="sql_where"/>
+    </select>
+
+</mapper>

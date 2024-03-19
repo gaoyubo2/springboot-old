@@ -1,0 +1,13 @@
+<div id="<%=id%>" class="quick_view_container2" appid="<%=appid%>" realappid="<%=realappid%>" style="top:<%=top%>px;left:<%=left%>px">
+    <div class="perfect_nine_box">
+        <div class="perfect_nine_middle">
+            <div class="perfect_nine_context">
+                <div class="quick_view_container_list" id="quick_view_container_list_<%=appid%>" realid="<%=appid%>">
+                    <div class="quick_view_container_list_in" id="quick_view_container_list_in_<%=appid%>" style="height:<%=height%>px">
+                        <%==apps%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+/*该皮肤参考lhgdialog插件皮肤，并在此基础上进行了修改 （原皮肤作者：一丝冰凉，QQ：50167214）*/
+/* lhgdialog : http://bbs.lhgcore.com/lhg4/index.html */
+
+/*窗口*/
+.window-container {
+    border-radius: 5px;
+    border: 1px solid #666;
+    background: #6E6E6E
+}
+
+/*当前窗口*/
+.window-current {
+    background: #6E6E6E
+}
+
+/*标题*/
+.title-bar,
+.window-current .title-bar {
+    border-radius: 5px 5px 0 0;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ebebeb), to(#c3c3c3));
+    background: -moz-linear-gradient(top, #ebebeb, #c3c3c3);
+    background: -o-linear-gradient(top, #ebebeb, #c3c3c3);
+    background: -ms-linear-gradient(top, #ebebeb, #c3c3c3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebebeb', endColorstr='#c3c3c3');
+    *background: #DDD
+}
+
+.title-bar .icon {
+    display: none;
+}
+
+/*标题文字*/
+.title-bar .title {
+    text-shadow: 0 1px 1px #fff
+}
+
+/*窗口右上角操作按钮*/
+.title-handle {
+    top: 8px;
+}
+
+.title-handle a {
+    color: #505050;
+    text-indent: -999em;
+    width: 14px;
+    height: 14px;
+    background: url(mac2/icon.png) no-repeat;
+    margin-right: 4px;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.title-handle a b {
+    display: none;
+}
+
+.title-handle .ha-hide {
+    background-position: -14px 0;
+}
+
+.title-handle:hover .ha-hide {
+    background-position: -14px -14px;
+}
+
+.title-handle .ha-max {
+    background-position: -28px 0;
+}
+
+.title-handle:hover .ha-max {
+    background-position: -28px -14px;
+}
+
+.title-handle .ha-revert {
+    background-position: -28px 0;
+}
+
+.title-handle:hover .ha-revert {
+    background-position: -28px 0px;
+}
+
+.title-handle .ha-fullscreen {
+    float: right;
+    background-position: -42px 0;
+}
+
+.title-handle:hover .ha-close {
+    background-position: 0 -14px;
+}
+
+/*窗口内部iframe*/
+.window-frame {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666
+}
+
+/*底部*/
+.set-bar,
+.window-current .set-bar {
+    border-radius: 0 0 5px 5px;
+    background: #E8E8E8;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ebebeb), to(#c3c3c3));
+    background: -moz-linear-gradient(top, #ebebeb, #c3c3c3);
+    background: -o-linear-gradient(top, #ebebeb, #c3c3c3);
+    background: -ms-linear-gradient(top, #ebebeb, #c3c3c3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebebeb', endColorstr='#c3c3c3');
+    *background: #DDD
+}
+
+.set-bar .btn,
+.window-current .set-bar .btn {
+    border: none;
+    width: 30px;
+    margin-top: 4px
+}
+
+.set-bar .btn:hover,
+.window-current .set-bar .btn:hover {
+    border: none;
+    background: none
+}
+
+.set-bar .btn .btn-con {
+    display: none
+}

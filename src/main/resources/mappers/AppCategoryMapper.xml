@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cestc.os.desktop.mapper.AppCategoryMapper">
+    <resultMap type="cn.cestc.os.desktop.model.AppCategoryModel" id="appCategoryModel">
+        <id property="tbid" column="tbid" javaType="int" jdbcType="INTEGER"/>
+        <result property="name" column="name" javaType="string" jdbcType="VARCHAR"/>
+        <result property="issystem" column="issystem" javaType="int" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="sql_where">
+        <where>
+            1=1
+            <if test="tbid !=null">
+                AND tbid = #{tbid}
+            </if>
+            <if test="name !=null">
+                AND name = #{name}
+            </if>
+            <if test="issystem !=null">
+                AND issystem = #{issystem}
+            </if>
+        </where>
+    </sql>
+
+
+    <insert id="insert" parameterType="cn.cestc.os.desktop.model.AppCategoryModel" flushCache="true"
+            useGeneratedKeys="true" keyProperty="tbid" keyColumn="GENERATED_KEY">
+		<![CDATA[
+        INSERT INTO tb_app_category (name,
+                                     issystem)
+        VALUES (#{name},
+                #{issystem});
+        ]]>
+	</insert>
+
+
+    <delete id="delete" parameterType="cn.cestc.os.desktop.model.AppCategoryModel">
+        <![CDATA[
+			DELETE 
+			
+			FROM 
+				tb_app_category
+		]]>
+        <include refid="sql_where"/>
+    </delete>
+
+    <update id="updateById" parameterType="cn.cestc.os.desktop.model.AppCategoryModel">
+        update tb_app_category
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="issystem != null">issystem=#{issystem}</if>
+        </set>
+        where tbid=#{tbid}
+    </update>
+
+    <update id="updateAppCategoryId">
+        update tb_app
+        <set>
+            app_category_id=#{appCategoryId}
+        </set>
+        where app_category_id=#{tbid};
+    </update>
+
+    <select id="selectByCondition" resultType="cn.cestc.os.desktop.model.AppCategoryModel"
+            parameterType="java.util.Map">
+        <![CDATA[
+			SELECT 
+			*
+			FROM
+				tb_app_category 
+		]]>
+        <include refid="sql_where"/>
+    </select>
+
+    <select id="selectPageCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tb_app_category
+        where 1=1
+        <if test="keyword != null and keyword !=''">and name like '%${keyword}%'</if>
+    </select>
+
+    <select id="selectPageByName" resultMap="appCategoryModel">
+        SELECT * from tb_app_category
+        where 1=1
+        <if test="keyword != null and keyword !=''">and name like '%${keyword}%'</if>
+        limit #{currentPage},#{pageSize}
+    </select>
+
+</mapper>

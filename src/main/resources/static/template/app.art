@@ -1,0 +1,12 @@
+{{if type=="folder"}}
+    <div class="appbtn" title="{{title}}" appid="{{appid}}" realappid="{{realappid}}" type="{{type}}">
+    <img src="{{imgsrc}}" alt="{{title}}" style="width:{{appsize}}px;height:{{appsize}}px;">
+    <span class="apptitle" style="width:{{appsize+10}}px;">{{title}}</span>
+    </div>
+    {{else}}
+    <div class="appbtn" title="{{title}}" appid="{{appid}}" realappid="{{realappid}}" type="{{type}}">
+    <img src="{{imgsrc}}" alt="{{title}}" style="width:{{appsize}}px;height:{{appsize}}px;">
+    <span class="apptitle" style="width:{{appsize+20}}px;">{{title}}</span>
+    </div>
+{{/if}}
+

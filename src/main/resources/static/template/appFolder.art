@@ -1,0 +1,11 @@
+<div id="{{id}}" class="appbtn" title="{{title}}" appid="{{appid}}" realappid="{{realappid}}" type="{{type}}">
+    <div class="appFolder"  style="width:{{appsize-6}}px;height:{{appsize-6}}px;">
+       {{each folderArray item}}
+			<div class="folderAppContainer">
+            <img src="{{item.icon}}" class="folderAppImg" style="width:20px;height:20px;">
+              
+            </div>
+			{{/each}}
+    </div>
+    <span  class="apptitle" style="width:{{appsize+10}}px;">{{title}}</span>
+</div>

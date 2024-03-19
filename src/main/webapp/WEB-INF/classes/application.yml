@@ -1,0 +1,55 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/desktop?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: 123456
+    druid:
+      # 连接池配置
+      # 配置初始化大小、最小、最大
+      initial-size: 1
+      min-idle: 1
+      max-active: 10
+      # 配置获取连接等待超时的时间
+      max-wait: 3000
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      pool-prepared-statements: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      filters: stat,wall,slf4j
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/view/,classpath:/,classpath:/static
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 20000
+        readTimeout: 20000
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: cn.cestc.os.desktop.model
+
+cas:
+  client:
+    clientId: client1
+    clientSecret: 12345678
+
+  serverUrl: 'http://172.18.1.67/cas-server-webapp-3.5.2'
+  appUrl: 'http://172.18.1.67/cas-server-webapp-3.5.2/login'
+  server-login-url: 'http://172.18.1.67/cas-server-webapp-3.5.2/login'
+  casLogoutUrl: redirect:http://172.18.1.67/cas-server-webapp-3.5.2/logout?service=http://172.18.1.67/cas-server-webapp-3.5.2/login
+
+
+#logging:
+#  config: classpath:logback-spring.xml

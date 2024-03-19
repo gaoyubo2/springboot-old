@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cestc.os.desktop.mapper.AppMapper">
+    <resultMap type="cn.cestc.os.desktop.model.AppModel" id="appModel">
+        <id property="tbid" column="tbid" javaType="int" jdbcType="INTEGER"/>
+        <result property="name" column="name" javaType="string" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" javaType="string" jdbcType="VARCHAR"/>
+        <result property="url" column="url" javaType="string" jdbcType="VARCHAR"/>
+        <result property="width" column="width" javaType="int" jdbcType="INTEGER"/>
+        <result property="height" column="height" javaType="int" jdbcType="INTEGER"/>
+        <result property="isresize" column="isresize" javaType="int" jdbcType="TINYINT"/>
+        <result property="isopenmax" column="isopenmax" javaType="int" jdbcType="TINYINT"/>
+        <result property="issetbar" column="issetbar" javaType="int" jdbcType="TINYINT"/>
+        <result property="isflash" column="isflash" javaType="int" jdbcType="TINYINT"/>
+        <result property="remark" column="remark" javaType="string" jdbcType="VARCHAR"/>
+        <result property="usecount" column="usecount" javaType="int" jdbcType="BIGINT"/>
+        <result property="starnum" column="starnum" javaType="double" jdbcType="DOUBLE"/>
+        <result property="dt" column="dt" javaType="string" jdbcType="TIMESTAMP"/>
+        <result property="isrecommend" column="isrecommend" javaType="int" jdbcType="TINYINT"/>
+        <result property="verifytype" column="verifytype" javaType="int" jdbcType="TINYINT"/>
+        <result property="verifyinfo" column="verifyinfo" javaType="string" jdbcType="VARCHAR"/>
+        <result property="app_category_id" column="app_category_id" javaType="int" jdbcType="INTEGER"/>
+        <result property="member_id" column="member_id" javaType="int" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="sql_where">
+        <where>
+            1=1
+            <if test="tbid !=null">
+                AND tbid = #{tbid}
+            </if>
+            <if test="name !=null">
+                AND name like CONCAT('%','${name}','%' )
+            </if>
+            <if test="icon !=null">
+                AND icon = #{icon}
+            </if>
+            <if test="url !=null">
+                AND url = #{url}
+            </if>
+            <if test="width !=null">
+                AND width = #{width}
+            </if>
+            <if test="height !=null">
+                AND height = #{height}
+            </if>
+            <if test="isresize !=null">
+                AND isresize = #{isresize}
+            </if>
+            <if test="isopenmax !=null">
+                AND isopenmax = #{isopenmax}
+            </if>
+            <if test="issetbar !=null">
+                AND issetbar = #{issetbar}
+            </if>
+            <if test="isflash !=null">
+                AND isflash = #{isflash}
+            </if>
+            <if test="remark !=null">
+                AND remark = #{remark}
+            </if>
+            <if test="usecount !=null">
+                AND usecount = #{usecount}
+            </if>
+            <if test="starnum !=null">
+                AND starnum = #{starnum}
+            </if>
+            <if test="dt !=null">
+                AND dt = #{dt}
+            </if>
+            <if test="isrecommend !=null">
+                AND isrecommend = #{isrecommend}
+            </if>
+            <if test="verifytype !=null">
+                AND verifytype = #{verifytype}
+            </if>
+            <if test="verifyinfo !=null">
+                AND verifyinfo = #{verifyinfo}
+            </if>
+            <if test="app_category_id !=null">
+                AND app_category_id = #{app_category_id}
+            </if>
+            <if test="member_id !=null">
+                AND member_id = #{member_id}
+            </if>
+        </where>
+    </sql>
+
+
+    <insert id="insert" parameterType="cn.cestc.os.desktop.model.AppModel"
+            flushCache="true" useGeneratedKeys="true" keyProperty="tbid"
+            keyColumn="GENERATED_KEY">
+		<![CDATA[
+        INSERT INTO tb_app (name,
+                            icon,
+                            url,
+                            width,
+                            height,
+                            isresize,
+                            isopenmax,
+                            issetbar,
+                            isflash,
+                            remark,
+                            usecount,
+                            starnum,
+                            dt,
+                            isrecommend,
+                            verifytype,
+                            verifyinfo,
+                            app_category_id,
+                            member_id)
+        VALUES (#{name},
+                #{icon},
+                #{url},
+                #{width},
+                #{height},
+                #{isresize},
+                #{isopenmax},
+                #{issetbar},
+                #{isflash},
+                #{remark},
+                #{usecount},
+                #{starnum},
+                #{dt},
+                #{isrecommend},
+                #{verifytype},
+                #{verifyinfo},
+                #{app_category_id},
+                #{member_id});
+        ]]>
+	</insert>
+
+
+    <delete id="delete" parameterType="cn.cestc.os.desktop.model.AppModel">
+        <![CDATA[
+			DELETE 
+			
+			FROM 
+				tb_app
+		]]>
+        <include refid="sql_where"/>
+    </delete>
+
+    <update id="updateById" parameterType="cn.cestc.os.desktop.model.AppModel">
+        update tb_app
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="icon != null">icon=#{icon},</if>
+            <if test="url != null">url=#{url},</if>
+            <if test="width != null">width=#{width},</if>
+            <if test="height != null">height=#{height},</if>
+            <if test="isresize != null">isresize=#{isresize},</if>
+            <if test="isopenmax != null">isopenmax=#{isopenmax},</if>
+            <if test="issetbar != null">issetbar=#{issetbar},</if>
+            <if test="isflash != null">isflash=#{isflash},</if>
+            <if test="remark != null">remark=#{remark},</if>
+            <if test="usecount != null">usecount=#{usecount},</if>
+            <if test="starnum != null">starnum=#{starnum},</if>
+            <if test="dt != null">dt=#{dt},</if>
+            <if test="isrecommend != null">isrecommend=#{isrecommend},</if>
+            <if test="verifytype != null">verifytype=#{verifytype},</if>
+            <if test="verifyinfo != null">verifyinfo=#{verifyinfo},</if>
+            <if test="app_category_id != null">app_category_id=#{app_category_id},</if>
+            <if test="member_id != null">member_id=#{member_id}</if>
+        </set>
+        where tbid=#{tbid}
+    </update>
+
+
+    <select id="selectByCondition" resultMap="appModel">
+        <![CDATA[
+			SELECT 
+			   tbid,
+			   name,
+ 			   icon,
+			   url,
+		  	   width,
+		       height,
+			   isresize,
+			   isopenmax,
+			   issetbar,
+			   isflash,
+			   remark,
+			   usecount,
+			   starnum,
+			   dt,
+			   isrecommend,
+			   verifytype,
+			   verifyinfo,
+			   app_category_id,
+			   member_id
+			FROM
+				tb_app
+		]]>
+        <include refid="sql_where"/>
+    </select>
+
+    <select id="selectByCondition_" resultMap="appModel">
+        SELECT
+        tbid,
+        name,
+        icon,
+        url,
+        width,
+        height,
+        isresize,
+        isopenmax,
+        issetbar,
+        isflash,
+        remark,
+        usecount,
+        starnum,
+        dt,
+        isrecommend,
+        verifytype,
+        verifyinfo,
+        app_category_id,
+        member_id
+        FROM tb_app where 1=1
+        <if test="member_id >0">and member_id = ${member_id}</if>
+        <if test="keyword != null and keyword !=''">and name like '%${keyword}%'</if>
+        <if test="app_category_id != -1">and app_category_id=${app_category_id}</if>
+        <if test="verifytype != -1">and verifytype=${verifytype}</if>
+        <if test="appByUsername != null and appByUsername!=''">and name in (${appByUsername})</if>
+        order by ${orderBy}
+    </select>
+
+    <select id="getCount" resultType="INTEGER">
+        <![CDATA[
+			SELECT count(*) FROM tb_app
+		]]>
+        <include refid="sql_where"/>
+    </select>
+
+    <update id="update" parameterType="String">
+        ${sql}
+    </update>
+
+    <select id="selectByConditions" resultType="cn.cestc.os.desktop.model.AppModel">
+        ${sql}
+    </select>
+
+    <select id="getCounts" resultType="INTEGER" parameterType="String">
+        ${sql}
+    </select>
+
+    <insert id="insertApp" parameterType="String" flushCache="true" useGeneratedKeys="true" keyProperty="tbid"
+            keyColumn="GENERATED_KEY">
+		<![CDATA[
+        ${sql}
+        ]]>
+	</insert>
+    <update id="updateApp" parameterType="String">
+        ${sql}
+    </update>
+
+
+    <select id="selectByUserName" resultType="java.lang.String" parameterType="Integer">
+
+        SELECT name
+        FROM tb_app
+        where member_id = #{appId}
+
+    </select>
+</mapper>

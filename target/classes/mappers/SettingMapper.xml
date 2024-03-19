@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.cestc.os.desktop.mapper.SettingMapper">
+    <resultMap type="cn.cestc.os.desktop.model.SettingModel" id="settingModel">
+        <id column="tbid" property="tbid" javaType="int" jdbcType="INTEGER"/>
+        <result column="title" property="title" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="description" property="description" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="keywords" property="keywords" javaType="string" jdbcType="LONGVARCHAR"/>
+        <result column="isforcedlogin" property="isforcedlogin" javaType="int" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="sql_where">
+        <where>
+            1=1
+            <if test="tbid !=null">
+                AND tbid = #{tbid}
+            </if>
+            <if test="title !=null">
+                AND title = #{title}
+            </if>
+            <if test="description !=null">
+                AND description = #{description}
+            </if>
+            <if test="keywords !=null">
+                AND keywords = #{keywords}
+            </if>
+            <if test="isforcedlogin !=null">
+                AND isforcedlogin = #{isforcedlogin}
+            </if>
+        </where>
+    </sql>
+
+
+    <insert id="insert" parameterType="cn.cestc.os.desktop.model.SettingModel" flushCache="true" useGeneratedKeys="true"
+            keyProperty="tbid" keyColumn="GENERATED_KEY">
+		<![CDATA[
+        INSERT INTO tb_setting (title, description, keywords, isforcedlogin)
+        VALUES (#{title},
+                #{description},
+                #{keywords},
+                #{isforcedlogin});
+        ]]>
+	</insert>
+
+
+    <delete id="delete" parameterType="cn.cestc.os.desktop.model.SettingModel">
+        <![CDATA[
+			DELETE 
+			
+			FROM 
+				tb_setting
+		]]>
+        <include refid="sql_where"/>
+    </delete>
+
+    <update id="updateById" parameterType="cn.cestc.os.desktop.model.SettingModel">
+        update tb_setting
+        <set>
+            <if test="title != null">title=#{title},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="keywords != null">keywords=#{keywords},</if>
+            <if test="isforcedlogin != null">isforcedlogin=#{isforcedlogin}</if>
+        </set>
+        where tbid=#{tbid}
+    </update>
+
+
+    <select id="selectByCondition" resultMap="settingModel" parameterType="java.util.Map">
+        <![CDATA[
+			SELECT 
+			 tbid,title, description, keywords,isforcedlogin
+			FROM
+				tb_setting
+		]]>
+        <include refid="sql_where"/>
+    </select>
+
+</mapper>

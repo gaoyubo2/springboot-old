@@ -1,0 +1,14 @@
+# 配置服务应用端口
+server:
+  port: 8084
+
+
+spring:
+  application:
+    # 应用名称
+    name: llama-os-desktop
+  profiles:
+    # 环境配置
+    active: dev
+
+
