@@ -3,14 +3,18 @@ package cn.cestc.os.desktop.controller;
 
 import cn.cestc.os.desktop.model.MemberAppModel;
 import cn.cestc.os.desktop.model.MemberModel;
+import cn.cestc.os.desktop.model.Result;
 import cn.cestc.os.desktop.model.SettingModel;
+import cn.cestc.os.desktop.model.manage.User;
 import cn.cestc.os.desktop.pojo.DesktopVO;
 import cn.cestc.os.desktop.pojo.MoveAppVO;
 import cn.cestc.os.desktop.service.MemberAppService;
 import cn.cestc.os.desktop.service.MemberService;
 import cn.cestc.os.desktop.service.SettingService;
+import cn.cestc.os.desktop.service.SsoService;
 import cn.cestc.os.desktop.utils.AjaxResult;
 import cn.cestc.os.desktop.utils.ServletUtils;
+import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +48,8 @@ public class DeskTopController
     private MemberAppService memberAppService;
     @Autowired
     private SettingService settingService;
+    @Autowired
+    private SsoService ssoService;
 
     @Value("${cas.casLogoutUrl}")
     private String casLogoutUrl;
@@ -144,6 +150,19 @@ public class DeskTopController
     @RequestMapping("/getMyApp")
     @ResponseBody
     public DesktopVO getMyApp(HttpServletRequest request)
+    {
+//        Integer uid = StpUtil.getLoginIdAsInt();
+        Integer uid = 3;
+        Result<User> userR = ssoService.getUser(uid);
+        System.out.println(userR);
+        System.out.println(userR.getData().getClass());
+        User user = userR.getData();
+        String username = user.getUsername();
+        return memberAppService.selectByUsername(username, request);
+    }
+    @RequestMapping("/getMyAppOld")
+    @ResponseBody
+    public DesktopVO getMyAppOld(HttpServletRequest request)
     {
         //得到username，当member中的username不存在则新建
         String userName = ServletUtils.getUserName(request);

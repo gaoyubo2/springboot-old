@@ -1,6 +1,7 @@
 package cn.cestc.os.desktop.service.impl;
 
 import cn.cestc.os.desktop.model.Result;
+import cn.cestc.os.desktop.model.manage.User;
 import cn.cestc.os.desktop.service.SsoService;
 import cn.dev33.satoken.session.SaSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class SsoServiceImpl implements SsoService {
 
     @Value("${sso.getPermissionsUrl}")
     private String getPermissionsUrl;
+
+    @Value("${sso.getUserUrl}")
+    private String getUserUrl;
 
 
     @Override
@@ -65,5 +69,10 @@ public class SsoServiceImpl implements SsoService {
         headers.set("token",request.getHeader("token"));
         HttpEntity requestEntity = new HttpEntity(headers);
         return restTemplate.exchange(ifLoginUrl, HttpMethod.GET,requestEntity,Result.class).getBody();
+    }
+
+    @Override
+    public Result<User> getUser(Integer uid) {
+        return restTemplate.getForObject(getUserUrl, Result.class,uid);
     }
 }

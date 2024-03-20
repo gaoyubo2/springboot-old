@@ -184,13 +184,20 @@
         <include refid="sql_where"/>
     </select>
 
-    <select id="selectByAppids" resultMap="memberAppModel">
+    <select id="selectByAppidsOld" resultMap="memberAppModel">
 		<![CDATA[
         SELECT *
         FROM tb_member_app
         WHERE tbid IN (${appIds})
           AND name IN (${appByUsername})
         ORDER BY FIELD(tbid, ${appIds})
+        ]]>
+	</select>
+    <select id="selectByAppids" resultMap="memberAppModel">
+		<![CDATA[
+        SELECT *
+        FROM tb_member_app
+        WHERE realid IN (${appIds})
         ]]>
 	</select>
 

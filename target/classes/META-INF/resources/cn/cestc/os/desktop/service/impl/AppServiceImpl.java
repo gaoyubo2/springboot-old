@@ -70,9 +70,12 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public List<String> selectByUserName(Integer appId) {
-
+    public List<String> selectByUserNameOld(Integer appId) {
         return appMapper.selectByUserName(appId);
+    }
+    @Override
+    public List<String> selectByUserName(Integer appId) {
+        return appMapper.getAllAppName();
     }
 
     @Override

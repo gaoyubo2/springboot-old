@@ -82,4 +82,7 @@ public interface AppMapper
     //获取所有的app相关数据
     @Select("select * from tb_app;")
     List<AppModel> getApps();
+
+    @Select("select name from tb_app")
+    List<String> getAllAppName();
 }

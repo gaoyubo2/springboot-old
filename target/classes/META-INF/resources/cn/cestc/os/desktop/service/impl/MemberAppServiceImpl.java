@@ -20,6 +20,7 @@ import cn.cestc.os.desktop.utils.DateUtils;
 import cn.cestc.os.desktop.utils.FileOperationUtils;
 import cn.cestc.os.desktop.utils.ServletUtils;
 import cn.cestc.os.desktop.utils.StringUtil;
+import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,11 +80,8 @@ public class MemberAppServiceImpl implements MemberAppService {
         //通过username得到用户全部信息
         MemberModel memberModel = new MemberModel();
         memberModel.setUsername(username);
-
         memberModel = memberMapper.selectByCondition(memberModel).get(0);
         // log.info("memberModel: {}	", memberModel.toString());
-
-
         String appByUsername = StringUtil.toStrList(selectAppByUsername(username, request));
 
         //删除无权限的用户应用
@@ -104,11 +102,13 @@ public class MemberAppServiceImpl implements MemberAppService {
 
         String s = sb.length()==0?sb.toString():sb.substring(0, sb.length() - 1);
         appByUsername = appByUsername + s;
-
+        System.out.println(memberModel);
 
         List<Integer> folderids = new ArrayList<Integer>();
         if (memberModel.getDock() != null && !memberModel.getDock().equals("")) {
             List<MemberAppModel> list = memberAppMapper.selectByAppids(memberModel.getDock(), appByUsername);
+
+            System.out.println(list);
             handlerDeskList(list, folderids);
             desktopVO.setDock(list);
         }

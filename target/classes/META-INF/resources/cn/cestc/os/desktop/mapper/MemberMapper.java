@@ -2,7 +2,9 @@ package cn.cestc.os.desktop.mapper;
 
 
 import cn.cestc.os.desktop.model.MemberModel;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import java.util.List;
  * 2015年7月20日 下午7:32:23
  */
 
-
+@Repository
 public interface MemberMapper
 {
     /**

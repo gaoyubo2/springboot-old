@@ -100,5 +100,6 @@ public interface AppService
 
 
     List<String> selectByUserName(Integer appId);
+    public List<String> selectByUserNameOld(Integer appId);
 
 }

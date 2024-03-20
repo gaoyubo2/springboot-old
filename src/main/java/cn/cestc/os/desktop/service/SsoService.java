@@ -1,6 +1,7 @@
 package cn.cestc.os.desktop.service;
 
 import cn.cestc.os.desktop.model.Result;
+import cn.cestc.os.desktop.model.manage.User;
 import cn.dev33.satoken.session.SaSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,4 +25,6 @@ public interface SsoService {
     Result<Boolean> logout(HttpServletRequest request);
 
     Result<Boolean> ifLogin(HttpServletRequest request);
+
+    Result<User> getUser(Integer uid);
 }

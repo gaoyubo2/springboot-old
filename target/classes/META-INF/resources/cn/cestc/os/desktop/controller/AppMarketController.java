@@ -2,10 +2,12 @@ package cn.cestc.os.desktop.controller;
 
 
 import cn.cestc.os.desktop.model.*;
+import cn.cestc.os.desktop.model.manage.User;
 import cn.cestc.os.desktop.service.*;
 import cn.cestc.os.desktop.utils.DateUtils;
 import cn.cestc.os.desktop.utils.ServletUtils;
 import cn.cestc.os.desktop.utils.StringUtil;
+import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,8 @@ public class AppMarketController {
     private TenantFeignService tenantFeignService;
     @Autowired
     private ErrorHadnlerController errorHadnlerController;
+    @Autowired
+    private SsoService ssoService;
 
     public static final void writeJson(HttpServletResponse response, String json) {
         response.setContentType("application/json;charset=UTF-8");
@@ -67,6 +71,54 @@ public class AppMarketController {
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request, Model model) {
+        // String userName = request.getRemoteUser();
+        String userName = ServletUtils.getUserName(request);
+        MemberModel member = memberService.selectByUserName(userName);
+        model.addAttribute("member", member);
+
+        // 查询我已被分配的应用
+        //获取用户角色
+//        Integer uid = StpUtil.getLoginIdAsInt();
+//        User user = ssoService.getUser(uid).getData();
+//        Integer roleId = user.getRoleId();
+        Integer roleId = 19;
+        List<MemberAppModel> memberAppList = memberAppService.selectByMemberId(roleId);
+        model.addAttribute("memberAppList", memberAppList);
+
+        String keyword = ServletRequestUtils.getStringParameter(request, "keyword", "");
+        try {
+            model.addAttribute("keyword", java.net.URLDecoder.decode(keyword, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+        String appByUsername = StringUtil.toStrList(memberAppService.selectAppByUsername(userName, request));
+
+        // 今日推荐
+        List<AppModel> appModelList = appService.selectByCondition(0, "isrecommend desc, tbid desc", null, -1, 1, appByUsername);
+        AppModel appModel = new AppModel();
+        appModel.setStarnum(0d);
+        if (appModelList != null && appModelList.size() > 0) {
+            appModel = appModelList.get(0);
+        }
+        model.addAttribute("appModel", appModel);
+
+        // 类目类型
+        List<AppCategoryModel> appCategoryList = appCategoryService.selectByCondition(null);
+        model.addAttribute("appCategoryList", appCategoryList);
+
+        // 我开发的应用数量
+        int kf = appService.selectByCondition(member.getTbid(), "tbid desc", null, -1, -1, appByUsername).size();
+        // 已上线的应用数量
+        int sx = appService.selectByCondition(member.getTbid(), "tbid desc", null, -1, 1, appByUsername).size();
+
+        model.addAttribute("kf", kf);
+        model.addAttribute("wfb", (kf - sx));
+        return "/appmarket/index";
+    }
+    @RequestMapping("/indexOld")
+    public String indexOld(HttpServletRequest request, Model model) {
         // String userName = request.getRemoteUser();
         String userName = ServletUtils.getUserName(request);
         MemberModel member = memberService.selectByUserName(userName);

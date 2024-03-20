@@ -84,8 +84,9 @@ sa-token:
 
 # SSO配置
 sso:
-  loginUrl: http://10.56.183.138:8888/login
-  logoutUrl: http://10.56.183.138:8888/logout
-  ifLoginUrl: http://localhost:8888/ifLogin
-  getSessionUrl: http://localhost:8888/session
-  getPermissionsUrl: http://localhost:8888/permissions
+  loginUrl: http://10.56.183.138:8889/login
+  logoutUrl: http://10.56.183.138:8889/logout
+  ifLoginUrl: http://localhost:8889/ifLogin
+  getSessionUrl: http://10.56.183.138:8889/session
+  getPermissionsUrl: http://10.56.183.138:8889/permissions
+  getUserUrl: http://10.56.183.138:8889/user?uid={uid}

@@ -28,9 +28,9 @@ public class DateManageController {
 
     //获取app相关数据
     @GetMapping("/apps")
-    public AppModel getApps(){
-        AppModel appModel = dateManageService.getApps().get(0);
-        return appModel;
+    public List<AppModel> getApps(){
+        List<AppModel> appModels = dateManageService.getApps();
+        return appModels;
     }
     //"/app?tbid=2"  根据id查app信息
     @GetMapping("/app")
