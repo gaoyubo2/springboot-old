@@ -2,6 +2,7 @@ package cn.cestc.os.desktop.mapper;
 
 
 import cn.cestc.os.desktop.model.MemberModel;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -48,4 +49,7 @@ public interface MemberMapper
      * @param memberModel
      */
     List<MemberModel> selectByCondition(MemberModel memberModel);
+
+    @Select("select * from tb_member")
+    List<MemberModel> getRoles();
 }
