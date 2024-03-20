@@ -184,20 +184,13 @@
         <include refid="sql_where"/>
     </select>
 
-    <select id="selectByAppidsOld" resultMap="memberAppModel">
+    <select id="selectByAppids" resultMap="memberAppModel">
 		<![CDATA[
         SELECT *
         FROM tb_member_app
         WHERE tbid IN (${appIds})
           AND name IN (${appByUsername})
         ORDER BY FIELD(tbid, ${appIds})
-        ]]>
-	</select>
-    <select id="selectByAppids" resultMap="memberAppModel">
-		<![CDATA[
-        SELECT *
-        FROM tb_member_app
-        WHERE realid IN (${appIds})
         ]]>
 	</select>
 
@@ -210,5 +203,13 @@
           and type != 'folder'
         ]]>
 	</select>
+
+    <select id="getAppListByAppIds" resultType="memberAppModel">
+        <![CDATA[
+        SELECT *
+        FROM tb_member_app
+        WHERE realid IN (${realids})
+        ]]>
+    </select>
 
 </mapper>

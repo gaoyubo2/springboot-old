@@ -102,7 +102,6 @@ public class MemberAppServiceImpl implements MemberAppService {
 
         String s = sb.length()==0?sb.toString():sb.substring(0, sb.length() - 1);
         appByUsername = appByUsername + s;
-        System.out.println(memberModel);
 
         List<Integer> folderids = new ArrayList<Integer>();
         if (memberModel.getDock() != null && !memberModel.getDock().equals("")) {
@@ -743,15 +742,15 @@ public class MemberAppServiceImpl implements MemberAppService {
             List<String> deskarr = StringUtil.StringToList((String) memberModel.getClass().getDeclaredMethod("getDesk" + moveAppVO.getDesk()).invoke(memberModel), ",");
             //将应用加入desk
             if (deskarr.size() == 0) {
-                deskarr.add(moveAppVO.getId() + "");
+                deskarr.add(String.valueOf(moveAppVO.getId()));
             } else {
                 if (deskarr.get(0).equals("")) {
-                    deskarr.set(0, moveAppVO.getId() + "");
+                    deskarr.set(0, String.valueOf(moveAppVO.getId()));
                 } else {
                     if (moveAppVO.getTo() >= deskarr.size()) {
-                        deskarr.add(moveAppVO.getId() + "");
+                        deskarr.add(String.valueOf(moveAppVO.getId()));
                     } else {
-                        deskarr.add(moveAppVO.getTo(), moveAppVO.getId() + "");
+                        deskarr.add(moveAppVO.getTo(), String.valueOf(moveAppVO.getId()));
                     }
                 }
             }
@@ -768,12 +767,12 @@ public class MemberAppServiceImpl implements MemberAppService {
             List<String> todeskarr = StringUtil.StringToList((String) memberModel.getClass().getDeclaredMethod("getDesk" + moveAppVO.getTodesk()).invoke(memberModel), ",");
             //将应用加入desk
             if (todeskarr.size() == 0) {
-                todeskarr.add(moveAppVO.getId() + "");
+                todeskarr.add(String.valueOf(moveAppVO.getId()));
             } else {
                 if (todeskarr.get(0).equals("")) {
-                    todeskarr.set(0, moveAppVO.getId() + "");
+                    todeskarr.set(0, String.valueOf(moveAppVO.getId()));
                 } else {
-                    todeskarr.add(moveAppVO.getId() + "");
+                    todeskarr.add(String.valueOf(moveAppVO.getId()));
                 }
             }
             memberModel.getClass().getDeclaredMethod("setDesk" + moveAppVO.getTodesk(), String.class).invoke(
@@ -802,7 +801,7 @@ public class MemberAppServiceImpl implements MemberAppService {
         //当对应用户应用表不为空的时候
         if (memapplist.size() == 0) {
             return "THISAPPISNOWITHINUSER";
-        } else if (memapplist.size() > 0) {
+        } else {
             AppModel app = new AppModel();
             app.setTbid(memapplist.get(0).getRealid());
             List<AppModel> applist = appMapper.selectByCondition(app);
@@ -817,6 +816,83 @@ public class MemberAppServiceImpl implements MemberAppService {
     public Integer deletBynoAuthByUsernames(Integer memberId,
                                             String appByUsername) {
         return memberAppMapper.deletBynoAuthByUsernames(memberId, appByUsername);
+    }
+
+    /**
+     * 通过roleId获取Desk
+     * time: 2024.3.20
+     */
+    @Override
+    public DesktopVO getDeskByRoleId(String username,Integer roleId, HttpServletRequest request) {
+        DesktopVO desktopVO = new DesktopVO();
+        //获取用户桌面信息
+        MemberModel memberModel = new MemberModel();
+        memberModel.setUsername(username);
+        memberModel = memberMapper.selectByCondition(memberModel).get(0);
+
+
+        //获取桌面文件夹名
+        Integer tbid = memberModel.getTbid();
+        MemberAppModel memberAppModel1 = new MemberAppModel();
+        memberAppModel1.setMemberId(tbid);
+        memberAppModel1.setType("folder");
+
+        //获取用户桌面1-5，dock应用
+        List<Integer> folderids = new ArrayList<>();
+
+        // 在需要获取用户桌面1-5的地方调用该方法
+        getDesktopApps(memberModel.getDock(), desktopVO, folderids,0);
+        getDesktopApps(memberModel.getDesk1(), desktopVO, folderids,1);
+        getDesktopApps(memberModel.getDesk2(), desktopVO, folderids,2);
+        getDesktopApps(memberModel.getDesk3(), desktopVO, folderids,3);
+        getDesktopApps(memberModel.getDesk4(), desktopVO, folderids,4);
+        getDesktopApps(memberModel.getDesk5(), desktopVO, folderids,5);
+
+        // 检查是否有文件夹
+        if (folderids.size() > 0) {
+            // 创建一个列表用于存储文件夹及其应用程序
+            List<DeskTopFolerAppVO> deskTopFolerAppVOs = new ArrayList<>();
+            for (Integer folderid : folderids) {
+                DeskTopFolerAppVO deskTopFolerAppVO = createDeskTopFolerAppVO(folderid, memberModel);
+                // 将 DeskTopFolerAppVO 实例添加到列表中
+                deskTopFolerAppVOs.add(deskTopFolerAppVO);
+            }
+            // 设置桌面视图对象的文件夹列表
+            desktopVO.setFolder(deskTopFolerAppVOs);
+        }
+
+        return desktopVO;
+    }
+    private void getDesktopApps(String realids, DesktopVO desktopVO, List<Integer> folderids,Integer desk) {
+        if (realids != null && !realids.equals("")) {
+            List<MemberAppModel> list = memberAppMapper.getAppListByAppIds(realids);
+            handlerDeskList(list, folderids);
+            if (desk == 0) desktopVO.setDock(list);
+            else if(desk == 1) desktopVO.setDesk1(list);
+            else if(desk == 2) desktopVO.setDesk2(list);
+            else if(desk == 3) desktopVO.setDesk3(list);
+            else if(desk == 4) desktopVO.setDesk4(list);
+            else if(desk == 5) desktopVO.setDesk5(list);
+
+        }
+    }
+    private DeskTopFolerAppVO createDeskTopFolerAppVO(Integer folderid, MemberModel memberModel) {
+        DeskTopFolerAppVO deskTopFolerAppVO = new DeskTopFolerAppVO();
+        deskTopFolerAppVO.setAppid(folderid);
+
+        MemberAppModel memberAppModel = new MemberAppModel();
+        memberAppModel.setFolderId(folderid);
+        memberAppModel.setMemberId(memberModel.getTbid());
+        List<MemberAppModel> list = memberAppMapper.selectByCondition(memberAppModel);
+        for (MemberAppModel memberAppModeltemp : list) {
+            if ("file".equals(memberAppModeltemp.getType())) {
+                memberAppModeltemp.setName(memberAppModeltemp.getName() + "." + memberAppModeltemp.getExt());
+            }
+            memberAppModeltemp.setAppid(memberAppModeltemp.getTbid());
+            memberAppModeltemp.setRealappid(memberAppModeltemp.getRealid());
+        }
+        deskTopFolerAppVO.setApps(list);
+        return deskTopFolerAppVO;
     }
 
 }

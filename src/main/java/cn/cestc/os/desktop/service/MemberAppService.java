@@ -169,4 +169,9 @@ public interface MemberAppService
      */
     Integer deletBynoAuthByUsernames(Integer memberId, String appByUsername);
 
+    /**
+     * 通过roleId获取Desk
+     * time: 2024.3.20
+     */
+    DesktopVO getDeskByRoleId(String username, Integer roleId, HttpServletRequest request);
 }

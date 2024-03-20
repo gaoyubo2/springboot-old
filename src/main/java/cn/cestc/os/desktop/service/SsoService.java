@@ -26,5 +26,5 @@ public interface SsoService {
 
     Result<Boolean> ifLogin(HttpServletRequest request);
 
-    Result<User> getUser(Integer uid);
+    User getUser(Integer uid);
 }

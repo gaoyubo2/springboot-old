@@ -25,6 +25,8 @@ public class DateManageController {
     private AppService appService;
     @Autowired
     private MemberAppService memberAppService;
+    @Autowired
+    private MemberService memberService;
 
     //获取app相关数据
     @GetMapping("/apps")
@@ -44,9 +46,16 @@ public class DateManageController {
     //插入member app model
     @PostMapping("/memberApp")
     public Boolean insertMemberApp(@RequestBody MemberAppModel memberAppModel){
-        System.out.println(memberAppModel);
         Integer insert = memberAppService.insert(memberAppModel);
         return insert > 0;
+    }
+    @PostMapping("member")
+    public Boolean insertMember(@RequestBody MemberModel memberModel){
+        return memberService.insert(memberModel) > 0;
+    }
+    @PostMapping("updateMember")
+    public Boolean updateMember(@RequestBody MemberModel memberModel){
+        return memberService.updateByUsername(memberModel) > 0;
     }
 
     //获取roles相关数据

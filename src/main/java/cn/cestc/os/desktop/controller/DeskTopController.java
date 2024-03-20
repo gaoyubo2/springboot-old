@@ -82,10 +82,13 @@ public class DeskTopController
             HttpServletRequest request,
             HttpServletResponse response)
     {
-
-        String userName = ServletUtils.getUserName(request);
+        //String userName = ServletUtils.getUserName(request);
+        //更改：获取用户名satoken
+        Integer uid = StpUtil.getLoginIdAsInt();
+        String userName = ssoService.getUser(uid).getUsername();
         //通过用户名去新建或者更新用户表
         memberService.saveMemberOnMemberIsNotExist(userName);
+
         MemberModel memberModel = new MemberModel();
         memberModel.setUsername(userName);
         // 通过条件查询 tb_member 用户表
@@ -107,7 +110,7 @@ public class DeskTopController
      * @return
      * @author bo.xu
      */
-    @RequestMapping("/getMyAppById")
+    @RequestMapping("/getMyAppByIdOlde")
     @ResponseBody
     public Object getMyAppById(Integer id, String type, HttpServletRequest request, HttpServletResponse response)
     {
@@ -126,6 +129,18 @@ public class DeskTopController
         }
         return memberAppModel;
     }
+    /**
+     * 郜宇博
+     * Description: 通过应用id得到应用
+     * 2024.3.21
+     */
+    @RequestMapping("/getMyAppById")
+    @ResponseBody
+    public Object getAppByAppId(Integer id) {
+        MemberAppModel memberAppModel = new MemberAppModel();
+        memberAppModel.setTbid(id);
+        return memberAppService.selectByCondition(memberAppModel).get(0);
+    }
 
     /**
      * Description: 通过应用id下载file类型应用内容
@@ -142,23 +157,17 @@ public class DeskTopController
     }
 
     /**
-     * Description: 通过当前用户名得到主页显示的应用
-     *
-     * @return
-     * @author bo.xu
+     * 通过角色Id获取Desk
+     * date: 2024.3.20
      */
     @RequestMapping("/getMyApp")
     @ResponseBody
     public DesktopVO getMyApp(HttpServletRequest request)
     {
-//        Integer uid = StpUtil.getLoginIdAsInt();
-        Integer uid = 3;
-        Result<User> userR = ssoService.getUser(uid);
-        System.out.println(userR);
-        System.out.println(userR.getData().getClass());
-        User user = userR.getData();
-        String username = user.getUsername();
-        return memberAppService.selectByUsername(username, request);
+        //获取用户id
+        Integer uid = StpUtil.getLoginIdAsInt();
+        User user = ssoService.getUser(uid);
+        return memberAppService.getDeskByRoleId(user.getUsername(), user.getRoleId(), request);
     }
     @RequestMapping("/getMyAppOld")
     @ResponseBody

@@ -6,9 +6,8 @@ import cn.cestc.os.desktop.service.SsoService;
 import cn.dev33.satoken.session.SaSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -72,7 +71,18 @@ public class SsoServiceImpl implements SsoService {
     }
 
     @Override
-    public Result<User> getUser(Integer uid) {
-        return restTemplate.getForObject(getUserUrl, Result.class,uid);
+    public User getUser(Integer uid) {
+        try {
+            ResponseEntity<Result<User>> responseEntity = restTemplate.exchange(getUserUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Result<User>>() {}, uid);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                Result<User> result = responseEntity.getBody();
+                if (result != null && result.getData() != null) {
+                    return result.getData();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

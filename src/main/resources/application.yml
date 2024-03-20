@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.56.181.180:3306/desktoptest?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/desktoptest?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: root
     password: 123456
     druid:
@@ -84,9 +84,9 @@ sa-token:
 
 # SSO配置
 sso:
-  loginUrl: http://10.56.183.138:8889/login
-  logoutUrl: http://10.56.183.138:8889/logout
+  loginUrl: http://localhost:8889/login
+  logoutUrl: http://localhost:8889/logout
   ifLoginUrl: http://localhost:8889/ifLogin
-  getSessionUrl: http://10.56.183.138:8889/session
-  getPermissionsUrl: http://10.56.183.138:8889/permissions
-  getUserUrl: http://10.56.183.138:8889/user?uid={uid}
+  getSessionUrl: http://localhost:8889/session
+  getPermissionsUrl: http://localhost:8889/permissions
+  getUserUrl: http://localhost:8889/user?uid={uid}

@@ -49,17 +49,16 @@ public interface MemberAppMapper
      *
      * @param appIds noAuthByUsernames
      */
-    List<MemberAppModel> selectByAppidsOld(@Param("appIds") String appIds, @Param("appByUsername") String appByUsername);
-
-    /**
-     * Description: 通过应用id组成的字符串和无权限应用名称字符串联合查询应用
-     *
-     * @param appIds noAuthByUsernames
-     */
     List<MemberAppModel> selectByAppids(@Param("appIds") String appIds, @Param("appByUsername") String appByUsername);
+
 
     /**
      * Description: 通过无权限的应用名称删除对应用户应用
      */
     Integer deletBynoAuthByUsernames(@Param("memberId") Integer memberId, @Param("appByUsername") String appByUsername);
+
+    /**
+     * 通过appid列表获取MemApp列表
+     */
+    List<MemberAppModel> getAppListByAppIds(@Param("realids") String realids);
 }
