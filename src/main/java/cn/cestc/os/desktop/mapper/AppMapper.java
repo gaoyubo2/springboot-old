@@ -3,6 +3,7 @@ package cn.cestc.os.desktop.mapper;
 
 import cn.cestc.os.desktop.model.AppModel;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -77,4 +78,8 @@ public interface AppMapper
 
 
     List<String> selectByUserName(@Param("appId")Integer appId);
+
+    //获取所有的app相关数据
+    @Select("select * from tb_app;")
+    List<AppModel> getApps();
 }
