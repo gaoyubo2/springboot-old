@@ -1,6 +1,9 @@
 package cn.cestc.os.desktop.utils;
 
 
+import cn.cestc.os.desktop.model.manage.User;
+import cn.cestc.os.desktop.service.SsoService;
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ public class ServletUtils
     private RestTemplate restTemplate;
     @Value("${cas.serverUrl}")
     private String casServerUrl;
+    @Autowired
+    private static SsoService ssoService;
 
     /*
      * @Author 关玉珍
@@ -58,7 +63,7 @@ public class ServletUtils
      * @Param [request]
      * @return java.lang.String
      **/
-    public static String getUserName(HttpServletRequest request)
+    public static String getUserNameOld(HttpServletRequest request)
     {
 //        Map map = getUserInfo(request);
 //
@@ -76,6 +81,21 @@ public class ServletUtils
 //
 //        return username;
         return "";
+    }
+    /*
+     * @Author 郜宇博
+     * @Description  获取当前登录的用户名
+     * @Date 2024/3/21
+     * @Param [request]
+     * @return java.lang.String
+     **/
+    public static String getUserName(HttpServletRequest request)
+    {
+        Integer uid = StpUtil.getLoginIdAsInt();
+        User user = ssoService.getUser(uid);
+        return user.getUsername();
+//        return "用户3";
+
     }
 
     /*
@@ -135,13 +155,26 @@ public class ServletUtils
     }
 
     /*
+     * @Author 郜宇博
+     * @Description  获取当前登录的用户名
+     * @Date 2024/3/21
+     * @Param [request]
+     * @return java.lang.String
+     **/
+    public static String getName(HttpServletRequest request)
+    {
+        String userName = getUserName(request);
+        return userName;
+//        return "用户3";
+    }
+    /*
      * @Author 关玉珍
      * @Description 获取用户名
      * @Date 13:06 2022/2/22
      * @Param [request]
      * @return java.lang.String
      **/
-    public static String getName(HttpServletRequest request)
+    public static String getNameOld(HttpServletRequest request)
     {
 
 //        Map map = getUserInfo(request);
@@ -160,7 +193,7 @@ public class ServletUtils
 //
 //        return name.toString();
 //        return "";
-          return "jupiter";
+        return "jupiter";
     }
 
     @PostConstruct //初始化

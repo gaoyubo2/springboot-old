@@ -5,6 +5,7 @@ import cn.cestc.os.desktop.model.MemberAppModel;
 import cn.cestc.os.desktop.model.MemberModel;
 import cn.cestc.os.desktop.model.Result;
 import cn.cestc.os.desktop.model.SettingModel;
+import cn.cestc.os.desktop.model.manage.MemberNameVO;
 import cn.cestc.os.desktop.model.manage.User;
 import cn.cestc.os.desktop.pojo.DesktopVO;
 import cn.cestc.os.desktop.pojo.MoveAppVO;
@@ -19,9 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -39,6 +38,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 @RequestMapping()
+@CrossOrigin
 public class DeskTopController
 {
 
@@ -82,8 +82,11 @@ public class DeskTopController
             HttpServletRequest request,
             HttpServletResponse response)
     {
-        String userName = ServletUtils.getUserName(request);
-        userName = "user2";
+        //String userName = ServletUtils.getUserName(request);
+        //更改：获取用户名satoken
+        Integer uid = StpUtil.getLoginIdAsInt();
+        String userName = ssoService.getUser(uid).getUsername();
+//        String userName = "用户3";
         //通过用户名去新建或者更新用户表
         memberService.saveMemberOnMemberIsNotExist(userName);
 
@@ -128,17 +131,16 @@ public class DeskTopController
         return memberAppModel;
     }
     /**
+     * 郜宇博
      * Description: 通过应用id得到应用
      * 2024.3.21
      */
     @RequestMapping("/getMyAppById")
     @ResponseBody
     public Object getAppByAppId(Integer id) {
-        System.out.println(id);
         MemberAppModel memberAppModel = new MemberAppModel();
         memberAppModel.setTbid(id);
-        MemberAppModel res = memberAppService.selectByCondition(memberAppModel).get(0);
-        return res;
+        return memberAppService.selectByCondition(memberAppModel).get(0);
     }
 
     /**
@@ -164,10 +166,14 @@ public class DeskTopController
     public DesktopVO getMyApp(HttpServletRequest request)
     {
         //获取用户id
-//        Integer uid = StpUtil.getLoginIdAsInt();
-        Integer uid = 3;
+        Integer uid = StpUtil.getLoginIdAsInt();
         User user = ssoService.getUser(uid);
-        return memberAppService.getDeskByRoleId(user.getUsername(), user.getRoleId(), request);
+        String username = user.getUsername();
+        Integer roleId = user.getRoleId();
+//        Integer uid = 10;
+//        String username = "用户3";
+//        Integer roleId = 21;
+        return memberAppService.getDeskByRoleId(username, roleId, request,uid);
     }
     @RequestMapping("/getMyAppOld")
     @ResponseBody
@@ -210,6 +216,7 @@ public class DeskTopController
         result.setResult("sucess");
         return result;
     }
+
 
 
 }

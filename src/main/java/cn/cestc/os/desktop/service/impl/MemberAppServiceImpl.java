@@ -8,6 +8,7 @@ import cn.cestc.os.desktop.model.AppModel;
 import cn.cestc.os.desktop.model.MemberAppModel;
 import cn.cestc.os.desktop.model.MemberModel;
 import cn.cestc.os.desktop.model.Result;
+import cn.cestc.os.desktop.model.manage.RoleWithMembersAndAppsVO;
 import cn.cestc.os.desktop.pojo.DeskTopFolerAppVO;
 import cn.cestc.os.desktop.pojo.DesktopVO;
 import cn.cestc.os.desktop.pojo.MenuDO;
@@ -823,7 +824,7 @@ public class MemberAppServiceImpl implements MemberAppService {
      * time: 2024.3.20
      */
     @Override
-    public DesktopVO getDeskByRoleId(String username,Integer roleId, HttpServletRequest request) {
+    public DesktopVO getDeskByRoleId(String username,Integer roleId, HttpServletRequest request,Integer uid) {
         DesktopVO desktopVO = new DesktopVO();
         //获取用户桌面信息
         MemberModel memberModel = new MemberModel();
@@ -841,19 +842,19 @@ public class MemberAppServiceImpl implements MemberAppService {
         List<Integer> folderids = new ArrayList<>();
 
         // 在需要获取用户桌面1-5的地方调用该方法
-        getDesktopApps(memberModel.getDock(), desktopVO, folderids,0);
-        getDesktopApps(memberModel.getDesk1(), desktopVO, folderids,1);
-        getDesktopApps(memberModel.getDesk2(), desktopVO, folderids,2);
-        getDesktopApps(memberModel.getDesk3(), desktopVO, folderids,3);
-        getDesktopApps(memberModel.getDesk4(), desktopVO, folderids,4);
-        getDesktopApps(memberModel.getDesk5(), desktopVO, folderids,5);
+        getDesktopApps(memberModel.getDock(), desktopVO, folderids,0,roleId,uid);
+        getDesktopApps(memberModel.getDesk1(), desktopVO, folderids,1,roleId,uid);
+        getDesktopApps(memberModel.getDesk2(), desktopVO, folderids,2,roleId,uid);
+        getDesktopApps(memberModel.getDesk3(), desktopVO, folderids,3,roleId,uid);
+        getDesktopApps(memberModel.getDesk4(), desktopVO, folderids,4,roleId,uid);
+        getDesktopApps(memberModel.getDesk5(), desktopVO, folderids,5,roleId,uid);
 
         // 检查是否有文件夹
         if (folderids.size() > 0) {
             // 创建一个列表用于存储文件夹及其应用程序
             List<DeskTopFolerAppVO> deskTopFolerAppVOs = new ArrayList<>();
             for (Integer folderid : folderids) {
-                DeskTopFolerAppVO deskTopFolerAppVO = createDeskTopFolerAppVO(folderid, memberModel);
+                DeskTopFolerAppVO deskTopFolerAppVO = createDeskTopFolerAppVO(folderid, roleId);
                 // 将 DeskTopFolerAppVO 实例添加到列表中
                 deskTopFolerAppVOs.add(deskTopFolerAppVO);
             }
@@ -863,9 +864,22 @@ public class MemberAppServiceImpl implements MemberAppService {
 
         return desktopVO;
     }
-    private void getDesktopApps(String realids, DesktopVO desktopVO, List<Integer> folderids,Integer desk) {
+
+
+
+    private void getDesktopApps(String realids, DesktopVO desktopVO, List<Integer> folderids,Integer desk,Integer roleId,Integer uid) {
         if (realids != null && !realids.equals("")) {
-            List<MemberAppModel> list = memberAppMapper.getAppListByAppIds(realids);
+            //获取应用
+            List<MemberAppModel> apps = memberAppMapper.getAppListByAppIds(realids,roleId);
+            //获取文件夹
+            MemberAppModel memberAppModel = new MemberAppModel();
+            //文件夹是桌面创建，需要使用uid
+            memberAppModel.setMemberId(uid);
+            memberAppModel.setType("folder");
+            List<MemberAppModel> folders = memberAppMapper.selectByCondition(memberAppModel);
+            //合并
+            List<MemberAppModel> list = new ArrayList<>(apps);
+            list.addAll(folders);
             handlerDeskList(list, folderids);
             if (desk == 0) desktopVO.setDock(list);
             else if(desk == 1) desktopVO.setDesk1(list);
@@ -876,7 +890,7 @@ public class MemberAppServiceImpl implements MemberAppService {
 
         }
     }
-    private DeskTopFolerAppVO createDeskTopFolerAppVO(Integer folderid, MemberModel memberModel) {
+    private DeskTopFolerAppVO createDeskTopFolerAppVOOld(Integer folderid, MemberModel memberModel) {
         DeskTopFolerAppVO deskTopFolerAppVO = new DeskTopFolerAppVO();
         deskTopFolerAppVO.setAppid(folderid);
 
@@ -884,6 +898,10 @@ public class MemberAppServiceImpl implements MemberAppService {
         memberAppModel.setFolderId(folderid);
         memberAppModel.setMemberId(memberModel.getTbid());
         List<MemberAppModel> list = memberAppMapper.selectByCondition(memberAppModel);
+        return getDeskTopFolerAppVO(deskTopFolerAppVO, list);
+    }
+
+    private DeskTopFolerAppVO getDeskTopFolerAppVO(DeskTopFolerAppVO deskTopFolerAppVO, List<MemberAppModel> list) {
         for (MemberAppModel memberAppModeltemp : list) {
             if ("file".equals(memberAppModeltemp.getType())) {
                 memberAppModeltemp.setName(memberAppModeltemp.getName() + "." + memberAppModeltemp.getExt());
@@ -893,6 +911,51 @@ public class MemberAppServiceImpl implements MemberAppService {
         }
         deskTopFolerAppVO.setApps(list);
         return deskTopFolerAppVO;
+    }
+
+    /**
+     * 2024/3/21
+     * 郜宇博
+     * 获取文件夹
+     * @return
+     */
+    private DeskTopFolerAppVO createDeskTopFolerAppVO(Integer folderid,Integer roleId) {
+        DeskTopFolerAppVO deskTopFolerAppVO = new DeskTopFolerAppVO();
+        deskTopFolerAppVO.setAppid(folderid);
+
+        MemberAppModel memberAppModel = new MemberAppModel();
+        memberAppModel.setFolderId(folderid);
+        memberAppModel.setMemberId(roleId);
+        List<MemberAppModel> list = memberAppMapper.selectByCondition(memberAppModel);
+        return getDeskTopFolerAppVO(deskTopFolerAppVO, list);
+    }
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean modifyMemberAppAndMember(RoleWithMembersAndAppsVO roleWithMembersAndAppsVO) {
+        try {
+            //删除role_id相关的memberApp记录（即：member_id）
+            Integer deleteCnt =  memberAppMapper.deleteByRoleId(roleWithMembersAndAppsVO.getRoleId());
+            //修改userList的Member的记录
+            System.out.println("UsernameList:"+roleWithMembersAndAppsVO.getUsernameList());
+            for(String username: roleWithMembersAndAppsVO.getUsernameList()){
+                MemberModel memberModel = new MemberModel();
+                memberModel.setUsername(username);
+                System.out.println(memberModel);
+                String desk1 = listToString(roleWithMembersAndAppsVO.getAppList());
+                memberModel.setDesk1(desk1);
+                memberMapper.updateByUsername(memberModel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    private String listToString(List<Integer> list){
+        // 使用toString()方法将列表转换为字符串
+        String resultWithBrackets = list.toString();
+        // 去除字符串的前后方括号
+        return resultWithBrackets.substring(1, resultWithBrackets.length() - 1);
     }
 
 }

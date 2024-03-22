@@ -3,6 +3,7 @@ package cn.cestc.os.desktop.service;
 
 import cn.cestc.os.desktop.model.MemberAppModel;
 import cn.cestc.os.desktop.model.MemberModel;
+import cn.cestc.os.desktop.model.manage.RoleWithMembersAndAppsVO;
 import cn.cestc.os.desktop.pojo.DesktopVO;
 import cn.cestc.os.desktop.pojo.MoveAppVO;
 
@@ -173,5 +174,7 @@ public interface MemberAppService
      * 通过roleId获取Desk
      * time: 2024.3.20
      */
-    DesktopVO getDeskByRoleId(String username, Integer roleId, HttpServletRequest request);
+    DesktopVO getDeskByRoleId(String username, Integer roleId, HttpServletRequest request,Integer uid);
+
+    Boolean modifyMemberAppAndMember(RoleWithMembersAndAppsVO roleWithMembersAndAppsVO);
 }

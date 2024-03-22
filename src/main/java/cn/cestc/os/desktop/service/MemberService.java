@@ -2,6 +2,7 @@ package cn.cestc.os.desktop.service;
 
 
 import cn.cestc.os.desktop.model.MemberModel;
+import cn.cestc.os.desktop.model.manage.RoleWithMembersAndAppsVO;
 
 import java.util.List;
 
@@ -82,4 +83,6 @@ public interface MemberService
      * @paramString MemberModel memberModel,Integer memberappid,Integer desk
      */
     Integer updateSomedeskByMemberidAndMemapid(MemberModel memberModel, Integer memberappid, Integer desk);
+
+
 }

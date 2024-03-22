@@ -60,5 +60,7 @@ public interface MemberAppMapper
     /**
      * 通过appid列表获取MemApp列表
      */
-    List<MemberAppModel> getAppListByAppIds(@Param("realids") String realids);
+    List<MemberAppModel> getAppListByAppIds(@Param("realids") String realids,Integer roleId);
+
+    Integer deleteByRoleId(@Param("roleId") Integer roleId);
 }

@@ -110,6 +110,14 @@
 		]]>
         <include refid="sql_where"/>
     </delete>
+    <delete id="deleteByRoleId">
+        <![CDATA[
+        DELETE
+        FROM
+            tb_member_app
+        WHERE member_id = #{roleId}
+        ]]>
+    </delete>
 
     <update id="updateById" parameterType="cn.cestc.os.desktop.model.MemberAppModel">
         update tb_member_app
@@ -208,7 +216,7 @@
         <![CDATA[
         SELECT *
         FROM tb_member_app
-        WHERE realid IN (${realids})
+        WHERE realid IN (${realids}) and member_id = #{roleId} and folder_id = 0
         ]]>
     </select>
 
