@@ -25,8 +25,13 @@ public class ServletUtils
     private RestTemplate restTemplate;
     @Value("${cas.serverUrl}")
     private String casServerUrl;
-    @Autowired
+
     private static SsoService ssoService;
+
+    @Autowired
+    public void setSomeService(SsoService ssoService) {
+        cn.cestc.os.desktop.utils.ServletUtils.ssoService = ssoService;
+    }
 
     /*
      * @Author 关玉珍
@@ -92,7 +97,10 @@ public class ServletUtils
     public static String getUserName(HttpServletRequest request)
     {
         Integer uid = StpUtil.getLoginIdAsInt();
+        System.out.println("uid:"+uid);
         User user = ssoService.getUser(uid);
+        System.out.println("usr:"+user);
+
         return user.getUsername();
 //        return "用户3";
 

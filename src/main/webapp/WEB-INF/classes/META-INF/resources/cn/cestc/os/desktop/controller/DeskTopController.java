@@ -149,7 +149,7 @@ public class DeskTopController
         String userName = ServletUtils.getUserName(request);
         memberService.saveMemberOnMemberIsNotExist(userName);
         //返回桌面数据 通过用户名查询应用
-        return memberAppService.selectByUsername(userName, request);
+        return
     }
 
     /**

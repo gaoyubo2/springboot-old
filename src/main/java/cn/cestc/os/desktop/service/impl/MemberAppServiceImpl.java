@@ -23,6 +23,7 @@ import cn.cestc.os.desktop.utils.ServletUtils;
 import cn.cestc.os.desktop.utils.StringUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -935,12 +936,29 @@ public class MemberAppServiceImpl implements MemberAppService {
         try {
             //删除role_id相关的memberApp记录（即：member_id）
             Integer deleteCnt =  memberAppMapper.deleteByRoleId(roleWithMembersAndAppsVO.getRoleId());
+            //添加新的memberApp
+            System.out.println("roleWithMembersAndAppsVO:"+roleWithMembersAndAppsVO);
+            for(Integer appId: roleWithMembersAndAppsVO.getAppList()){
+                //获取App
+                AppModel appModel1 = new AppModel();
+                appModel1.setTbid(appId);
+                AppModel appModel = appService.selectByCondition(appModel1).get(0);
+                //插入新的MemberApp
+                MemberAppModel memberAppModel = new MemberAppModel();
+                BeanUtils.copyProperties(appModel,memberAppModel);
+                memberAppModel.setRealid(appId);
+                memberAppModel.setMemberId(roleWithMembersAndAppsVO.getRoleId());
+                memberAppModel.setType("window");
+                memberAppMapper.insert(memberAppModel);
+                System.out.println("插入新的memApp成功："+memberAppModel);
+
+            }
             //修改userList的Member的记录
             System.out.println("UsernameList:"+roleWithMembersAndAppsVO.getUsernameList());
             for(String username: roleWithMembersAndAppsVO.getUsernameList()){
                 MemberModel memberModel = new MemberModel();
                 memberModel.setUsername(username);
-                System.out.println(memberModel);
+                System.out.println("memberModel:"+memberModel);
                 String desk1 = listToString(roleWithMembersAndAppsVO.getAppList());
                 memberModel.setDesk1(desk1);
                 memberMapper.updateByUsername(memberModel);

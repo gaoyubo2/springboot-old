@@ -80,7 +80,7 @@ sa-token:
   # 是否输出操作日志
   is-log: true
   # 是否尝试从 cookie 里读取 Token，此值为 false 后，StpUtil.login(id) 登录时也不会再往前端注入Cookie
-  isReadCookie: false
+  isReadCookie: true
 
 # SSO配置
 sso:

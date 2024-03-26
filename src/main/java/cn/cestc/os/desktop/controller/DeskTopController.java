@@ -38,7 +38,6 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 @RequestMapping()
-@CrossOrigin
 public class DeskTopController
 {
 
@@ -77,12 +76,13 @@ public class DeskTopController
      * @Param [request]
      * @return java.lang.String
      **/
+//    @CrossOrigin(origins = "http://10.56.180.51:5173")
     @RequestMapping("/")
     public String toMainPage(
             HttpServletRequest request,
             HttpServletResponse response)
     {
-        //String userName = ServletUtils.getUserName(request);
+//        String userName = ServletUtils.getUserName(request);
         //更改：获取用户名satoken
         Integer uid = StpUtil.getLoginIdAsInt();
         String userName = ssoService.getUser(uid).getUsername();
@@ -101,6 +101,7 @@ public class DeskTopController
         request.setAttribute("wallInitData", memberService.getWallpaperByUsername(userName));
         //当前用户信息
         request.setAttribute("memberModel", memberModel);
+        System.out.println("MemberModel:"+memberModel);
         return "index";
     }
 
@@ -170,10 +171,12 @@ public class DeskTopController
         User user = ssoService.getUser(uid);
         String username = user.getUsername();
         Integer roleId = user.getRoleId();
+        DesktopVO desk = memberAppService.getDeskByRoleId(username, roleId, request, uid);
+        System.out.println("desk:"+desk);
 //        Integer uid = 10;
 //        String username = "用户3";
 //        Integer roleId = 21;
-        return memberAppService.getDeskByRoleId(username, roleId, request,uid);
+        return desk;
     }
     @RequestMapping("/getMyAppOld")
     @ResponseBody

@@ -2,6 +2,7 @@ package cn.cestc.os.desktop.pojo;
 
 
 import cn.cestc.os.desktop.model.MemberAppModel;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author bo.xu
  * 2015年7月29日 下午12:47:58
  */
-
+@Data
 public class DesktopVO implements Serializable
 {
 
